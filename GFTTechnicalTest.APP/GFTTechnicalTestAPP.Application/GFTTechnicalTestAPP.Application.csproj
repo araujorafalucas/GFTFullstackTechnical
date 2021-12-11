@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GFTTechnicalTestAPP.Domain\GFTTechnicalTestAPP.Domain.csproj" />
+    <ProjectReference Include="..\GFTTechnicalTestAPP.Infrastructure.ExternalServices\GFTTechnicalTestAPP.Infrastructure.ExternalServices.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,92 @@
+﻿@model GFTTechnicalTestAPP.Application.ViewModels.OrderViewModel
+@{
+    ViewData["Title"] = "Order App";
+}
+
+    <script type="text/javascript">
+    function send() {
+
+        if ($("#input").val() == "") {
+            document.getElementById('labelLoading').innerHTML = "Campo input é obrigatório."
+            return;
+        }
+
+        $.ajax({
+            url: "/orders/AddOrder/",
+            data: { input: $("#input").val() },
+            type: "post",
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                document.getElementById('labelLoading').innerHTML = "Aguarde.."
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                document.getElementById('labelLoading').innerHTML = "Erro: " + errorThrown;
+            },
+            success: function (data, textStatus, XMLHttpRequest) {
+                document.getElementById('labelLoading').innerHTML = "Processado com sucesso.";
+                $("#output").val(data.orderOutput);
+                addOrderRow($("#input").val(), data.orderOutput);                
+            }
+        });
+    }
+
+        function addOrderRow(input, output) {
+            $("<tr> <td> " + input + " </td>  <td> " + output + " </td> </tr>").appendTo("#orders");
+    }
+    </script>
+
+
+@Html.ValidationSummary(true)
+
+<div class="horizontalDiv">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Order.OrderInput)
+    </div>
+    <div class="editor-field">
+        <input type="text" id="input" class="customTextBox" />
+        @Html.ValidationMessageFor(model => model.Order.OrderInput)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Order.OrderOutput)
+    </div>
+    <div class="editor-field">
+        <input type="text" id="output" class="customTextBox" readonly/>
+    </div>
+
+    <input type="button" class="customButton" onclick="send();" value="Enviar" />
+    <label id="labelLoading" style="margin-left:5px"></label>
+</div>
+
+
+<div class="center">
+    <table id="orders" class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order.OrderInput)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order.OrderOutput)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Orders)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderInput)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderOutput)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
